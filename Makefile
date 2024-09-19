@@ -7,7 +7,7 @@ RM = rm -rf
 
 
 DIR_ENV = env/
-SRCS_ENV = env.c get_env.c
+SRCS_ENV = env.c get_env.c change_to_env.c
 ENV = $(addprefix $(DIR_ENV), $(SRCS_ENV))
 
 
@@ -27,11 +27,14 @@ FREE = $(addprefix $(DIR_FREE), $(SRCS_FREE))
 
 
 DIR_PARSING = parsing/
-SRCS_PARSING = input_to_tokens.c token_types.c token_parsing.c parse_basic_redir.c parse_text.c
+SRCS_PARSING = input_to_tokens.c token_types.c token_parsing.c parse_basic_redir.c parse_text.c parse_append_heredoc.c
 PARSING = $(addprefix $(DIR_PARSING), $(SRCS_PARSING))
 
+DIR_EXECUTE = execute/
+SRCS_EXECUTE = execute_init.c
+EXECUTE = $(addprefix $(DIR_EXECUTE), $(SRCS_EXECUTE))
 
-SRCS = $(ENV) $(MINISHELL_INIT) $(TOOLS) $(FREE) $(PARSING)
+SRCS = $(ENV) $(MINISHELL_INIT) $(TOOLS) $(FREE) $(PARSING) $(EXECUTE)
 OBJS = $(SRCS:.c=.o)
 
 

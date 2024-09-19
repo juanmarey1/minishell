@@ -38,6 +38,7 @@ int		quote_token(t_minishell *minishell, int i)
 	line = minishell->user_input;
 	if (line[i] == '\'')
 	{
+		i++;
 		while (line[i] != '\'' && line[i])
 			i++;
 		if (!line[i])
@@ -46,6 +47,7 @@ int		quote_token(t_minishell *minishell, int i)
 	}
 	else
 	{
+		i++;
 		while (line[i] != '"' && line[i])
 			i++;
 		if (!line[i])

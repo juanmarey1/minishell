@@ -14,6 +14,8 @@ typedef struct s_token
 	
 	int				infile;
 	int				outfile;
+	int				heredoc;
+	int				append;
 	int				cmd;
 
 	struct s_token	*next;
@@ -36,10 +38,20 @@ typedef struct s_minishell
 
 // ENV FUNCTIONS //
 
+char	*get_line_before_env(char *line, int len);
+char	*get_env(char *line, int stay, int i, t_minishell *minishell);
+char	*get_line_after_env(char *line, int i);
+char	*get_line_after_env_change(char **substring, char *line, int i, int j);
+void	ft_free_env_line_array(char **substring);
+
 void	set_env_value(char *str, char *value, t_minishell *minishell);
 char	*get_env_value(char *str, t_minishell *minishell);
 void	get_list_of_env(char **environ, t_minishell *minishell);
 void	sum_one_to_shlvl(t_minishell *minishell);
+
+// EXECUTE FUNCTIONS //
+
+void	execute_commands(t_minishell *minishell);
 
 // INPUT FUNCTIONS //
 
@@ -59,8 +71,8 @@ int		parse_tokens(t_minishell *minishell);
 
 void	parse_redir_input(t_minishell *minishell, t_token *list);
 void	parse_redir_output(t_minishell *minishell, t_token *list);
-// void	parse_redir_append(t_minishell *minishell, t_token *list);
-// void	parse_redir_heredoc(t_minishell *minishell, t_token *list);
+void	parse_redir_append(t_minishell *minishell, t_token *list);
+void	parse_redir_heredoc(t_minishell *minishell, t_token *list);
 void	parse_pipe(t_minishell *minishell, t_token *list);
 void	parse_text(t_token *list);
 void	parse_quotes(t_token *list);

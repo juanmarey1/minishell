@@ -28,6 +28,7 @@ int	main(int argc, char *argv[], char **env)
 		}
 		input_to_tokens(&minishell);
 		free(minishell.user_input);
+		// execute_commands(&minishell);
 	}
 	rl_clear_history();
 	free_all(&minishell);

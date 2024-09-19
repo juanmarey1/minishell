@@ -24,6 +24,8 @@ t_token	*ft_lstnew_token(int type, char *str)
 	node->infile = 0;
 	node->outfile = 0;
 	node->cmd = 0;
+	node->append = 0;
+	node->heredoc = 0;
 	return (node);
 }
 
@@ -76,11 +78,11 @@ char	*get_after_first_word(t_token *list, char *first_word)
 	i = 0;
 	len = ft_strlen(first_word);
 	j = len;
-	while (list->str[len])
-		len++;
 	if (!list->str[len])
 		return (NULL);
-	rest_of_word = (char *)malloc(sizeof(char) * (len + 1));
+	while (list->str[len])
+		len++;
+	rest_of_word = (char *)malloc(sizeof(char) * (len - j + 1));
 	if (!rest_of_word)
 		return (NULL);
 	while (j < len)

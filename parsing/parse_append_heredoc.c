@@ -1,30 +1,30 @@
 #include "../include/minishell.h"
 
-static void	get_infile_token(t_token *list)
+static void	get_heredoc_token(t_token *list)
 {
-	char	*infile;
-	char	*after_infile;
+	char	*eof;
+	char	*after_eof;
 	t_token	*new;
 	t_token *next_token;
 
-	infile = get_first_word(list->next);
-	after_infile = get_after_first_word(list->next, infile);
+	eof = get_first_word(list->next);
+	after_eof = get_after_first_word(list->next, eof);
 	next_token = list->next->next;
 	free(list->next->str);
 	free(list->next);
-	new = ft_lstnew_token(TEXT, infile);
-	new->infile++;
+	new = ft_lstnew_token(TEXT, eof);
+	new->heredoc++;
 	list->next = new;
-	if (!after_infile)
+	if (!after_eof)
 		new->next = next_token;
 	else
 	{
-		new->next = ft_lstnew_token(TEXT, after_infile);
+		new->next = ft_lstnew_token(TEXT, after_eof);
 		new->next->next = next_token;
 	}
 }
 
-static void	get_outfile_token(t_token *list)
+static void	get_append_token(t_token *list)
 {
 	char	*outfile;
 	char	*after_outfile;
@@ -37,7 +37,7 @@ static void	get_outfile_token(t_token *list)
 	free(list->next->str);
 	free(list->next);
 	new = ft_lstnew_token(TEXT, outfile);
-	new->outfile++;
+	new->append++;
 	list->next = new;
 	if (!after_outfile)
 		new->next = next_token;
@@ -48,7 +48,7 @@ static void	get_outfile_token(t_token *list)
 	}
 }
 
-void	parse_redir_input(t_minishell *minishell, t_token *list)
+void	parse_redir_append(t_minishell *minishell, t_token *list)
 {
 	if (!(list->next) || (list->next->type != TEXT && list->next->type != SINGLE_QUOTE && list->next->type != DOUBLE_QUOTE))
 	{
@@ -58,13 +58,13 @@ void	parse_redir_input(t_minishell *minishell, t_token *list)
 	else
 	{
 		if (list->next->type == SINGLE_QUOTE || list->next->type == DOUBLE_QUOTE)
-			list->next->infile++;
+			list->next->append++;
 		else
-			get_infile_token(list);
+			get_append_token(list);
 	}
 }
 
-void	parse_redir_output(t_minishell *minishell, t_token *list)
+void	parse_redir_heredoc(t_minishell *minishell, t_token *list)
 {
 	if (!(list->next) || (list->next->type != TEXT && list->next->type != SINGLE_QUOTE && list->next->type != DOUBLE_QUOTE))
 	{
@@ -74,8 +74,8 @@ void	parse_redir_output(t_minishell *minishell, t_token *list)
 	else
 	{
 		if (list->next->type == SINGLE_QUOTE || list->next->type == DOUBLE_QUOTE)
-			list->next->outfile++;
+			list->next->heredoc++;
 		else
-			get_outfile_token(list);
+			get_heredoc_token(list);
 	}
 }
