@@ -28,17 +28,15 @@ FREE = $(addprefix $(DIR_FREE), $(SRCS_FREE))
 
 DIR_PARSING = parsing/
 SRCS_PARSING = input_to_tokens.c token_types.c token_parsing.c parse_basic_redir.c parse_text.c
-FREE = $(addprefix $(DIR_PARSING), $(SRCS_PARSING))
-
-SRCS_TEST = main.c
+PARSING = $(addprefix $(DIR_PARSING), $(SRCS_PARSING))
 
 
-SRCS = $(ENV) $(MINISHELL_INIT) $(SRCS_TEST) $(TOOLS) $(FREE)
+SRCS = $(ENV) $(MINISHELL_INIT) $(TOOLS) $(FREE) $(PARSING)
 OBJS = $(SRCS:.c=.o)
 
 
 INCLUDE = -I include -I libft
-LIBRARY = -L libft -lft
+LIBRARY = -L libft -lft -lreadline
 
 
 %.o: %.c

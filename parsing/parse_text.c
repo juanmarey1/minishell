@@ -11,7 +11,7 @@ void	parse_pipe(t_minishell *minishell, t_token *list)
 		minishell->error++;
 	if (!(list->next) || (list->next->type != TEXT && list->next->type != SINGLE_QUOTE && list->next->type != DOUBLE_QUOTE))
 	{
-		if (minishell->error = 0)
+		if (minishell->error == 0)
 			minishell->error = 1;
 	}
 	return ;

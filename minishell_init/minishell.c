@@ -1,7 +1,9 @@
 #include "../include/minishell.h"
 
-void	init_minishell(t_minishell *minishell)
+void	init_minishell(t_minishell *minishell, int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
 	minishell->exit = 0;
 	minishell->exit_status = 0;
 	minishell->user_input = NULL;
@@ -10,14 +12,12 @@ void	init_minishell(t_minishell *minishell)
 	minishell->error = 0;
 }
 
-char **mini_env = NULL;
-
-int	main(void)
+int	main(int argc, char *argv[], char **env)
 {
 	t_minishell	minishell;
 
-	init_minishell(&minishell);
-	get_list_of_env(mini_env, &minishell);
+	init_minishell(&minishell, argc, argv);
+	get_list_of_env(env, &minishell);
 	sum_one_to_shlvl(&minishell);
 	while (minishell.exit == 0)
 	{
@@ -27,12 +27,9 @@ int	main(void)
 			break ;
 		}
 		input_to_tokens(&minishell);
+		free(minishell.user_input);
 	}
-	
-	// TEST FOR ENV //
-	env_test(&minishell);
-
+	rl_clear_history();
 	free_all(&minishell);
-
 	return (0);
 }

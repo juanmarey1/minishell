@@ -11,7 +11,7 @@ t_token	**ft_create_double_list(void)
 	return (list_of_tokens);
 }
 
-t_token	*ft_lstnew_token(char *type, char *str)
+t_token	*ft_lstnew_token(int type, char *str)
 {
 	t_token	*node;
 
@@ -29,13 +29,16 @@ t_token	*ft_lstnew_token(char *type, char *str)
 
 void	ft_lstadd_token_back(t_token **token_list, t_token *new)
 {
+	t_token	*list;
+
+	list = *token_list;
 	if (!(*token_list))
 		*token_list = new;
 	else
 	{
-		while (*token_list != NULL)
-			*token_list = (*token_list)->next;
-		*token_list = new;
+		while (list->next != NULL)
+			list = (list)->next;
+		list->next = new;
 	}
 }
 

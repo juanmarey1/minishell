@@ -41,7 +41,7 @@ int		quote_token(t_minishell *minishell, int i)
 		while (line[i] != '\'' && line[i])
 			i++;
 		if (!line[i])
-			ft_exit(QUOTES_ERR, minishell);
+			return (i);
 		return (ft_create_token(minishell, SINGLE_QUOTE, i + 1, stay));
 	}
 	else
@@ -49,7 +49,7 @@ int		quote_token(t_minishell *minishell, int i)
 		while (line[i] != '"' && line[i])
 			i++;
 		if (!line[i])
-			ft_exit(QUOTES_ERR, minishell);
+			return (i);
 		return (ft_create_token(minishell, DOUBLE_QUOTE, i + 1, stay));
 	}
 }
@@ -62,6 +62,10 @@ int		text_token(t_minishell *minishell, int i)
 	stay = i;
 	line = minishell->user_input;
 	while (line[i] != '<' && line[i] != '>' && line[i] != '|' && line[i] != '\'' && line[i] != '"')
+	{
+		if (!line[i])
+			break ;
 		i++;
+	}
 	return (ft_create_token(minishell, TEXT, i, stay));
 }

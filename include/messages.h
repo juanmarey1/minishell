@@ -9,14 +9,13 @@
 # define QUOTES_ERR "Quotes not closed"
 # define PARSE_ERR "Error at input parsing"
  
-# define REDIR_HEREDOC "Heredoc redirection"
-# define REDIR_APPEND "Append redirection"
-# define REDIR_INPUT "Input redirection"
-# define REDIR_OUTPUT "Output redirection"
-# define PIPE "Pipe token"
-# define TEXT "Text token"
-# define SINGLE_QUOTE "Single quote"
-# define DOUBLE_QUOTE "Double quote"
-# define INFILE "Infile"
+# define REDIR_HEREDOC 1
+# define REDIR_APPEND 2
+# define REDIR_INPUT 3
+# define REDIR_OUTPUT 4
+# define PIPE 5
+# define TEXT 6
+# define SINGLE_QUOTE 7
+# define DOUBLE_QUOTE 8
 
 #endif

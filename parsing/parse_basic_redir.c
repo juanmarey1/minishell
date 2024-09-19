@@ -33,6 +33,7 @@ void	get_outfile_token(t_token *list)
 
 	outfile = get_first_word(list->next);
 	after_outfile = get_after_first_word(list->next, outfile);
+	printf("%s%s\n\n", outfile, after_outfile);
 	next_token = list->next->next;
 	free(list->next->str);
 	free(list->next);
@@ -59,15 +60,13 @@ void	parse_redir_input(t_minishell *minishell, t_token *list)
 	{
 		if (list->next->type == SINGLE_QUOTE || list->next->type == DOUBLE_QUOTE)
 			list->next->infile++;
-		if (list->next->type == TEXT)
+		else
 			get_infile_token(list);
 	}
 }
 
 void	parse_redir_output(t_minishell *minishell, t_token *list)
 {
-	int	i;
-
 	if (!(list->next) || (list->next->type != TEXT && list->next->type != SINGLE_QUOTE && list->next->type != DOUBLE_QUOTE))
 	{
 		minishell->error++;
@@ -76,8 +75,8 @@ void	parse_redir_output(t_minishell *minishell, t_token *list)
 	else
 	{
 		if (list->next->type == SINGLE_QUOTE || list->next->type == DOUBLE_QUOTE)
-			list->next->infile++;
-		if (list->next->type == TEXT)
-			get_infile_token(list);
+			list->next->outfile++;
+		else
+			get_outfile_token(list);
 	}
 }
