@@ -10,6 +10,10 @@ void	init_minishell(t_minishell *minishell, int argc, char **argv)
 	minishell->tokens = NULL;
 	minishell->pipes = 0;
 	minishell->error = 0;
+	minishell->infile = 0;
+	minishell->outfile = 1;
+	minishell->pipe_fd[0] = -1;
+	minishell->pipe_fd[1] = -1;
 }
 
 int	main(int argc, char *argv[], char **env)
@@ -28,7 +32,7 @@ int	main(int argc, char *argv[], char **env)
 		}
 		input_to_tokens(&minishell);
 		free(minishell.user_input);
-		// execute_commands(&minishell);
+		execute_commands(&minishell);
 	}
 	rl_clear_history();
 	free_all(&minishell);

@@ -18,4 +18,12 @@
 # define SINGLE_QUOTE 7
 # define DOUBLE_QUOTE 8
 
+# define ECHO "echo"
+# define CD "cd"
+# define PWD "pwd"
+# define EXPORT "export"
+# define UNSET "unset"
+# define ENV "env"
+# define EXIT "exit"
+
 #endif

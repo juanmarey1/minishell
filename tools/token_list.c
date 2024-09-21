@@ -78,8 +78,6 @@ char	*get_after_first_word(t_token *list, char *first_word)
 	i = 0;
 	len = ft_strlen(first_word);
 	j = len;
-	if (!list->str[len])
-		return (NULL);
 	while (list->str[len])
 		len++;
 	rest_of_word = (char *)malloc(sizeof(char) * (len - j + 1));

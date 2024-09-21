@@ -17,7 +17,7 @@ MINISHELL_INIT = $(addprefix $(DIR_MINISHELL_INIT), $(SRCS_MINISHELL_INIT))
 
 
 DIR_TOOLS = tools/
-SRCS_TOOLS = double_str.c token_list.c
+SRCS_TOOLS = double_str.c token_list.c del_token.c ft_split_minishell.c
 TOOLS = $(addprefix $(DIR_TOOLS), $(SRCS_TOOLS))
 
 
@@ -31,10 +31,18 @@ SRCS_PARSING = input_to_tokens.c token_types.c token_parsing.c parse_basic_redir
 PARSING = $(addprefix $(DIR_PARSING), $(SRCS_PARSING))
 
 DIR_EXECUTE = execute/
-SRCS_EXECUTE = execute_init.c
+SRCS_EXECUTE = init_execution.c execute_command.c
 EXECUTE = $(addprefix $(DIR_EXECUTE), $(SRCS_EXECUTE))
 
-SRCS = $(ENV) $(MINISHELL_INIT) $(TOOLS) $(FREE) $(PARSING) $(EXECUTE)
+DIR_DIRECTORIES_PIPES = directories_pipes/
+SRCS_DIRECTORIES_PIPES = get_infile.c get_outfile.c get_pipe.c
+DIRECTORIES_PIPES = $(addprefix $(DIR_DIRECTORIES_PIPES), $(SRCS_DIRECTORIES_PIPES))
+
+DIR_BUILTIN = builtin/
+SRCS_BUILTIN = builtin_execute.c echo_builtin.c 
+BUILTIN = $(addprefix $(DIR_BUILTIN), $(SRCS_BUILTIN))
+
+SRCS = $(ENV) $(MINISHELL_INIT) $(TOOLS) $(FREE) $(PARSING) $(EXECUTE) $(DIRECTORIES_PIPES) $(BUILTIN)
 OBJS = $(SRCS:.c=.o)
 
 

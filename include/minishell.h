@@ -6,6 +6,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+# include <limits.h>
 
 typedef struct s_token
 {
@@ -34,7 +35,20 @@ typedef struct s_minishell
 	char			*user_input;
 
 	int				pipes;
+
+	int				infile;
+	int				outfile;
+	int				pipe_fd[2];
+	pid_t			*pid;
 }	t_minishell;
+
+
+
+// DIRECTORIES_PIPES FUNCTIONS //
+
+int		get_infile(t_minishell *minishell, int infile_fd, int pipe_index);
+int		get_outfile(t_minishell *minishell, int outfile_fd, int pipe_index);
+int		get_pipe_outfile(t_minishell *minishell);
 
 // ENV FUNCTIONS //
 
@@ -49,9 +63,22 @@ char	*get_env_value(char *str, t_minishell *minishell);
 void	get_list_of_env(char **environ, t_minishell *minishell);
 void	sum_one_to_shlvl(t_minishell *minishell);
 
+// BUILTIN FUNCTIONS //
+
+void	builtin_execute(t_minishell *minishell, char **cmd_argv);
+void	echo_builtin(int argc, char **argv);
+void	pwd_builtin(int argc, char **argv);
+void	cd_builtin(int argc, char **argv);
+void	export_builtin(int argc, char **argv);
+void	unset_builtin(int argc, char **argv);
+void	exit_builtin(int argc, char **argv);
+void	env_builtin(int argc, char **argv);
+
+
 // EXECUTE FUNCTIONS //
 
-void	execute_commands(t_minishell *minishell);
+void	init_execution(t_minishell *minishell);
+void	ft_execute_command(t_minishell *minishell, int i, int total_pipes);
 
 // INPUT FUNCTIONS //
 
@@ -88,13 +115,12 @@ void	ft_lstadd_token_back(t_token **token_list, t_token *new);
 char	*get_first_word(t_token *list);
 char	*get_after_first_word(t_token *list, char *first_word);
 
+void	del_token(t_token *to_del, t_token **list);
+
 // FREE FUNCTIONS //
 
 void	ft_exit(char *str, t_minishell *minishell);
 void	free_all(t_minishell *minishell);
 
-// TEST FUNCTIONS //
-
-void	env_test(t_minishell *minishell);
 
 #endif

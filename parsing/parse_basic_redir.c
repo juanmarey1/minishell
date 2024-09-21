@@ -39,6 +39,8 @@ static void	get_outfile_token(t_token *list)
 	new = ft_lstnew_token(TEXT, outfile);
 	new->outfile++;
 	list->next = new;
+	printf("sexo duro: %s\n", after_outfile);
+	printf("sexo? %c", after_outfile[0]);
 	if (!after_outfile)
 		new->next = next_token;
 	else
