@@ -44,6 +44,5 @@ int	get_outfile(t_minishell *minishell, int outfile_fd, int pipe_index)
 			outfile_fd = get_append_fd(list);
 		list = list->next;
 	}
-	// Programar que si tiene una pipe despues, que el output sea el input de la pipe.
 	return (outfile_fd);
 }

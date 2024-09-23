@@ -26,4 +26,6 @@
 # define ENV "env"
 # define EXIT "exit"
 
+# define PATH_MAX 4096
+
 #endif

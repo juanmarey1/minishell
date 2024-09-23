@@ -7,6 +7,7 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <limits.h>
+# include <sys/wait.h>
 
 typedef struct s_token
 {
@@ -38,7 +39,7 @@ typedef struct s_minishell
 
 	int				infile;
 	int				outfile;
-	int				pipe_fd[2];
+	int				**pipe_fd;
 	pid_t			*pid;
 }	t_minishell;
 
@@ -48,7 +49,10 @@ typedef struct s_minishell
 
 int		get_infile(t_minishell *minishell, int infile_fd, int pipe_index);
 int		get_outfile(t_minishell *minishell, int outfile_fd, int pipe_index);
-int		get_pipe_outfile(t_minishell *minishell);
+void	pipe_create(t_minishell *minishell, int i);
+void	create_pipes(t_minishell *minishell);
+void	pipe_write_dup(t_minishell *minishell, int i);
+void	close_file_descriptors(t_minishell *minishell);
 
 // ENV FUNCTIONS //
 
@@ -60,19 +64,21 @@ void	ft_free_env_line_array(char **substring);
 
 void	set_env_value(char *str, char *value, t_minishell *minishell);
 char	*get_env_value(char *str, t_minishell *minishell);
+void	add_env(char *str, t_minishell *minishell);
+void	unset_env(char *str, t_minishell *minishell);
 void	get_list_of_env(char **environ, t_minishell *minishell);
 void	sum_one_to_shlvl(t_minishell *minishell);
 
 // BUILTIN FUNCTIONS //
 
 void	builtin_execute(t_minishell *minishell, char **cmd_argv);
-void	echo_builtin(int argc, char **argv);
-void	pwd_builtin(int argc, char **argv);
-void	cd_builtin(int argc, char **argv);
-void	export_builtin(int argc, char **argv);
-void	unset_builtin(int argc, char **argv);
-void	exit_builtin(int argc, char **argv);
-void	env_builtin(int argc, char **argv);
+void	echo_builtin(int argc, char **argv, t_minishell *minishell);
+void	pwd_builtin(int argc, char **argv, t_minishell *minishell);
+void	cd_builtin(int argc, char **argv, t_minishell *minishell);
+void	export_builtin(int argc, char **argv, t_minishell *minishell);
+void	unset_builtin(int argc, char **argv, t_minishell *minishell);
+void	exit_builtin(int argc, char **argv, t_minishell *minishell);
+void	env_builtin(int argc, char **argv, t_minishell *minishell);
 
 
 // EXECUTE FUNCTIONS //
@@ -108,6 +114,7 @@ void	parse_quotes(t_token *list);
 
 int		double_str_len(char **double_array);
 void	ft_free_double_array(char **double_array);
+void	free_tokens(t_minishell *minishell);
 
 t_token	**ft_create_double_list(void);
 t_token	*ft_lstnew_token(int type, char *str);
@@ -116,6 +123,8 @@ char	*get_first_word(t_token *list);
 char	*get_after_first_word(t_token *list, char *first_word);
 
 void	del_token(t_token *to_del, t_token **list);
+
+char	**ft_split_minishell(char *str);
 
 // FREE FUNCTIONS //
 

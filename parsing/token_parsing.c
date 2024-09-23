@@ -59,8 +59,6 @@ int	parse_tokens(t_minishell *minishell)
 	t_token	*list;
 
 	list = *minishell->tokens;
-	// t_token *token_list;
-	// token_list = *minishell->tokens;
 	while (list)
 	{
 		if (list->type == REDIR_INPUT)
@@ -81,11 +79,13 @@ int	parse_tokens(t_minishell *minishell)
 	}
 	no_spaces_before_or_after_tokens(minishell->tokens);
 	remove_redir_tokens(minishell->tokens);
-	// while (token_list)
-	// {
-	// 	printf("type: %d\ntoken: %s\nheredoc: %d, append: %d, infile: %d, outfile: %d, command: %d\n\n", token_list->type, token_list->str, token_list->heredoc, token_list->append, token_list->infile, token_list->outfile, token_list->cmd);
-	// 	token_list = token_list->next;
-	// }
+	t_token *token_list;
+	token_list = *minishell->tokens;
+	while (token_list)
+	{
+		printf("type: %d\ntoken: %s\nheredoc: %d, append: %d, infile: %d, outfile: %d, command: %d\n\n", token_list->type, token_list->str, token_list->heredoc, token_list->append, token_list->infile, token_list->outfile, token_list->cmd);
+		token_list = token_list->next;
+	}
 	if (minishell->error)
 		return (1);
 	return (0);

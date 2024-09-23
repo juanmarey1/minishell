@@ -12,8 +12,8 @@ void	init_minishell(t_minishell *minishell, int argc, char **argv)
 	minishell->error = 0;
 	minishell->infile = 0;
 	minishell->outfile = 1;
-	minishell->pipe_fd[0] = -1;
-	minishell->pipe_fd[1] = -1;
+	minishell->pipe_fd = NULL;
+	minishell->pid = NULL;
 }
 
 int	main(int argc, char *argv[], char **env)
@@ -31,8 +31,8 @@ int	main(int argc, char *argv[], char **env)
 			break ;
 		}
 		input_to_tokens(&minishell);
+		init_execution(&minishell);
 		free(minishell.user_input);
-		execute_commands(&minishell);
 	}
 	rl_clear_history();
 	free_all(&minishell);

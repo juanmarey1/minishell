@@ -5,6 +5,7 @@ static char *get_str(char *str, int	i)
 	int		length;
 	char	*s_return;
 	int		j;
+	int		total_length;
 
 	j = 0;
 	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
@@ -15,10 +16,11 @@ static char *get_str(char *str, int	i)
 	s_return = (char *)malloc(sizeof(char) * (i - length + 1));
 	if (!s_return)
 		return (NULL);
-	while (i < length)
+	total_length = i - length;
+	while (j < total_length)
 	{
-		s_return[j] = str[i];
-		i++;
+		s_return[j] = str[length];
+		length++;
 		j++;
 	}
 	s_return[j] = '\0';
@@ -30,14 +32,18 @@ static char	*search_str(char *str, int word_index)
 	int	count_words;
 	int	i;
 
-	count_words = 0;
 	i = 0;
-	while (count_words < word_index)
+	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+		i++;
+	count_words = 1;
+	while (count_words < word_index + 1)
 	{
-		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
-			i++;
-		count_words++;
 		while (str[i] && (str[i] != ' ' && str[i] != '\t' && str[i] != '\n'))
+			i++;
+		if (str[i] == '\0')
+			return (NULL);
+		count_words++;
+		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
 			i++;
 	}
 	return (get_str(str, i));

@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-char	*builtin_check(char **argv)
+int	builtin_check(char **argv)
 {
 	if (ft_strncmp(argv[0], ECHO, ft_strlen(ECHO)) &&
 		ft_strncmp(argv[0], PWD, ft_strlen(PWD)) &&
@@ -36,6 +36,53 @@ char	*get_cmd_in_line(t_token **tokens, int i, int total_pipes)
 	return (NULL);
 }
 
+char	*ft_find_command(char **cmd_paths, char *command)
+{
+	char	*cmd_cpy;
+	char	*aux;
+	int		i;
+
+	i = 0;
+	while ((command[i] == ' ' || command[i] == '\0'))
+	{
+		if (command[i] == '\0')
+			return (NULL);
+		i++;
+	}
+	if (access(command, F_OK | X_OK) == 0)
+		return (command);
+	while (*cmd_paths)
+	{
+		aux = ft_strjoin(*cmd_paths, "/");
+		cmd_cpy = ft_strjoin(aux, command);
+		if (access(cmd_cpy, F_OK | X_OK) == 0)
+			return (cmd_cpy);
+		free(cmd_cpy);
+		cmd_paths++;
+	}
+	return (NULL);
+}
+
+int	cmd_execve(char **cmd_argv, t_minishell *minishell)
+{
+	char	**cmd_paths;
+	char	*command;
+
+	if (get_env_value("PATH", minishell) == NULL)
+	{
+		execve(cmd_argv[0], cmd_argv, minishell->env);
+		return (-1);
+	}
+	cmd_paths = ft_split(get_env_value("PATH", minishell), ':');
+	command = ft_find_command(cmd_paths, cmd_argv[0]);
+	if (!command)
+	{
+		return (-1);
+	}
+	execve(command, cmd_argv, minishell->env);
+	return (1);
+}
+
 void	ft_execute_command(t_minishell *minishell, int i, int total_pipes)
 {
 	char	*cmd;
@@ -43,13 +90,11 @@ void	ft_execute_command(t_minishell *minishell, int i, int total_pipes)
 
 	cmd = get_cmd_in_line(minishell->tokens, i, total_pipes);
 	cmd_argv = ft_split_minishell(cmd);
-	dup2(minishell->infile, STDIN_FILENO);
-	dup2(minishell->outfile, STDOUT_FILENO);
-	if (minishell->pipe_fd[0] >= 0 && minishell->pipe_fd[0] >= 0)
-	{
-		close(minishell->pipe_fd[0]);
-		close(minishell->pipe_fd[1]);
-	}
+	pipe_write_dup(minishell, i);
 	if (builtin_check(cmd_argv) != 0)
 		builtin_execute(minishell, cmd_argv);
+	if (cmd_execve(cmd_argv, minishell) < 0)
+		return ;
+	// close(minishell->infile);
+	// close(minishell->outfile);
 }

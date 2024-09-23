@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-char	*get_heredoc_line(t_token *list, char *eof)
+char	*get_heredoc_line(char *eof)
 {
 	char	*line;
 	char	*line_to_get;
@@ -32,8 +32,9 @@ int	get_heredoc_fd(t_token *list)
 		return (0);
 	else
 	{
-		here_doc_line = get_heredoc_line(list, list->str);
+		here_doc_line = get_heredoc_line(list->str);
 		write(fd[1], here_doc_line, ft_strlen(here_doc_line));
+		close(fd[1]);
 		return (fd[0]);
 	}
 }

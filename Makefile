@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 RM = rm -rf
 
 
@@ -35,11 +35,11 @@ SRCS_EXECUTE = init_execution.c execute_command.c
 EXECUTE = $(addprefix $(DIR_EXECUTE), $(SRCS_EXECUTE))
 
 DIR_DIRECTORIES_PIPES = directories_pipes/
-SRCS_DIRECTORIES_PIPES = get_infile.c get_outfile.c get_pipe.c
+SRCS_DIRECTORIES_PIPES = get_infile.c get_outfile.c get_pipe.c close_fd.c
 DIRECTORIES_PIPES = $(addprefix $(DIR_DIRECTORIES_PIPES), $(SRCS_DIRECTORIES_PIPES))
 
 DIR_BUILTIN = builtin/
-SRCS_BUILTIN = builtin_execute.c echo_builtin.c 
+SRCS_BUILTIN = builtin_execute.c echo_builtin.c cd_builtin.c pwd_builtin.c exit_builtin.c unset_builtin.c export_builtin.c env_builtin.c
 BUILTIN = $(addprefix $(DIR_BUILTIN), $(SRCS_BUILTIN))
 
 SRCS = $(ENV) $(MINISHELL_INIT) $(TOOLS) $(FREE) $(PARSING) $(EXECUTE) $(DIRECTORIES_PIPES) $(BUILTIN)

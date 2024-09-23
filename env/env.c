@@ -1,5 +1,54 @@
 #include "../include/minishell.h"
 
+void	unset_env(char *str, t_minishell *minishell)
+{
+	char	**new_env;
+	int		len;
+	int		i;
+	int		j;
+
+	i = -1;
+	len = 0;
+	j = 0;
+	while (minishell->env[len])
+		len++;
+	new_env = (char **)malloc(sizeof(char *) * len);
+	if (!new_env)
+		return ;
+	while (minishell->env[++i])
+	{
+		if (ft_strncmp(minishell->env[i], str, ft_strlen(str)) == 0)
+			i++;
+		new_env[j] = ft_strdup(minishell->env[i]);
+		j++;
+	}
+	new_env[j] = NULL;
+	ft_free_double_array(minishell->env);
+	minishell->env = new_env;
+}
+
+void	add_env(char *str, t_minishell *minishell)
+{
+	int		len;
+	char	**new_env;
+	int		i;
+
+	i = 0;
+	len = double_str_len(minishell->env);
+	new_env = (char **)malloc(sizeof(char *) * (len + 2));
+	if (!new_env)
+		return ;
+	while (minishell->env[i])
+	{
+		new_env[i] = ft_strdup(minishell->env[i]);
+		i++;
+	}
+	new_env[i] = ft_strdup(str);
+	new_env[i + 1] = NULL;
+	ft_free_double_array(minishell->env);
+	minishell->env = new_env;
+}
+
 void	set_env_value(char *str, char *value, t_minishell *minishell)
 {
 	int		i;
