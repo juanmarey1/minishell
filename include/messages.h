@@ -8,6 +8,7 @@
 # define MALLOC_ERR "Memory allocation error"
 # define QUOTES_ERR "Quotes not closed"
 # define PARSE_ERR "Error at input parsing"
+# define NOT_CMD ": command not found"
  
 # define REDIR_HEREDOC 1
 # define REDIR_APPEND 2

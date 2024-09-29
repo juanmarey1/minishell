@@ -28,7 +28,7 @@ char	*get_cmd_in_line(t_token **tokens, int i, int total_pipes)
 	}
 	while (list && list->type != PIPE)
 	{
-		if (list->cmd == 1)
+		if (list->cmd >= 1)
 			return (list->str);
 		else
 			list = list->next;
@@ -63,38 +63,59 @@ char	*ft_find_command(char **cmd_paths, char *command)
 	return (NULL);
 }
 
-int	cmd_execve(char **cmd_argv, t_minishell *minishell)
+void	cmd_execve(char **cmd_argv, t_minishell *minishell)
 {
 	char	**cmd_paths;
 	char	*command;
 
+	signal(SIGINT, ctrl_c_command);
+	signal(SIGQUIT, SIG_DFL);
 	if (get_env_value("PATH", minishell) == NULL)
 	{
 		execve(cmd_argv[0], cmd_argv, minishell->env);
-		return (-1);
+		ft_putstr_fd(cmd_argv[0], STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+		free_all(minishell, 0);
+		exit(127);
 	}
 	cmd_paths = ft_split(get_env_value("PATH", minishell), ':');
 	command = ft_find_command(cmd_paths, cmd_argv[0]);
 	if (!command)
 	{
-		return (-1);
+		ft_putstr_fd(cmd_argv[0], STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+		free_all(minishell, 0);
+		exit(127);
 	}
 	execve(command, cmd_argv, minishell->env);
-	return (1);
+	exit(127);
 }
 
 void	ft_execute_command(t_minishell *minishell, int i, int total_pipes)
 {
 	char	*cmd;
 	char	**cmd_argv;
+	int		j;
 
+	j = -1;
 	cmd = get_cmd_in_line(minishell->tokens, i, total_pipes);
-	cmd_argv = ft_split_minishell(cmd);
+	if (ft_strncmp(cmd, "awk ", 4) != 0)
+	{
+		cmd_argv = ft_split_minishell(cmd);
+		while (cmd_argv[++j])
+			cmd_argv[j] = ft_strtrim(cmd_argv[j], "\'\"");
+	}
+	else
+		cmd_argv = ft_split_for_awk(cmd);
+	pipe_read_dup(minishell, i);
 	pipe_write_dup(minishell, i);
 	if (builtin_check(cmd_argv) != 0)
+	{
 		builtin_execute(minishell, cmd_argv);
-	if (cmd_execve(cmd_argv, minishell) < 0)
-		return ;
+		exit(minishell->exit_status);
+	}
+	else
+		cmd_execve(cmd_argv, minishell);
 	// close(minishell->infile);
 	// close(minishell->outfile);
 }

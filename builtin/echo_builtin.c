@@ -5,7 +5,6 @@ void	echo_builtin(int argc, char **argv, t_minishell *minishell)
 	int	new_line;
 	int	i;
 
-	(void)minishell;
 	i = 1;
 	new_line = 1;
 	if (argc == 1)
@@ -26,4 +25,5 @@ void	echo_builtin(int argc, char **argv, t_minishell *minishell)
 	}
 	if (new_line == 1)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	minishell->exit_status = 0;
 }

@@ -58,10 +58,13 @@ char	*change_to_env_value(char	*line, t_minishell *minishell)
 	{
 		if (line[i] == '\'')
 		{
-			while (line[i] && line[i] != '\'')
+			i++;
+			while (line[i] != '\0' && line[i] != '\'')
 				i++;
+			if (!line[i])
+				return (line);
 		}
-		if (line[i] == '$')
+		if (line[i] == '$' && (line[i + 1] != ' ' && line[i + 1] != '\t' && line[i + 1] != '\n' && line[i + 1] && line[i + 1] != '\"'))
 		{
 			line = update_line_with_env_value(line, i, minishell);
 			if (!line)
@@ -78,6 +81,7 @@ void	input_to_tokens(t_minishell *minishell)
 	int	i;
 
 	i = 0;
+	signal(SIGINT, SIG_IGN);
 	minishell->user_input = change_to_env_value(minishell->user_input, minishell);
 	if (!minishell->user_input)
 		return ;
@@ -97,6 +101,5 @@ void	input_to_tokens(t_minishell *minishell)
 		else
 			i = text_token(minishell, i);
 	}
-	if (parse_tokens(minishell))
-		ft_exit(PARSE_ERR, minishell);
+	parse_tokens(minishell);
 }

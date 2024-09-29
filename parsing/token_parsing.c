@@ -16,6 +16,17 @@ void	remove_redir_tokens(t_token **tokens)
 		else
 			list = list->next;
 	}
+	list = *tokens;
+	while (list->next)
+	{
+		if (list->cmd == 1 && list->next->cmd == 1)
+		{
+			join_tokens(list, list->next, tokens);
+			list = *tokens;
+		}
+		else
+			list = list->next;
+	}
 }
 
 int	check_all_spaces(char *str)
@@ -31,7 +42,35 @@ int	check_all_spaces(char *str)
 		return (0);
 }
 
-void	no_spaces_before_or_after_tokens(t_token **tokens)
+static int	check_quotes(char *str)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = ft_strlen(str);
+	if (len < 2)
+		return (0);
+	if (str[i] == '\"')
+	{
+		i++;
+		while (str[i] != '\"' && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+			i++;
+		if (str[i] == '\"')
+			return (1);
+	}
+	else if (str[i] == '\'')
+	{
+		i++;
+		while (str[i] != '\'' && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+			i++;
+		if (str[i] == '\'')
+			return (1);
+	}
+	return (0);
+}
+
+int	no_spaces_before_or_after_tokens(t_minishell *minishell, t_token **tokens)
 {
 	t_token	*list;
 	char	*str_cpy;
@@ -47,17 +86,25 @@ void	no_spaces_before_or_after_tokens(t_token **tokens)
 		}
 		else
 		{
+			if (check_quotes(list->str))
+				return (no_exit_free(list->str, NOT_CMD, minishell), 1);
 			list->str = ft_strtrim(str_cpy, " \t\n");
 			free(str_cpy);
 			list = list->next;
 		}
 	}
+	remove_redir_tokens(tokens);
+	if (minishell->error == 1)
+		return (minishell->error = 0, free_all(minishell, 0), 1);
+	return (0);
 }
 
-int	parse_tokens(t_minishell *minishell)
+void	parse_tokens(t_minishell *minishell)
 {
 	t_token	*list;
 
+	if (!minishell->tokens)
+		return (free_all(minishell, 0), (void)0);
 	list = *minishell->tokens;
 	while (list)
 	{
@@ -77,8 +124,8 @@ int	parse_tokens(t_minishell *minishell)
 			parse_quotes(list);
 		list = list->next;
 	}
-	no_spaces_before_or_after_tokens(minishell->tokens);
-	remove_redir_tokens(minishell->tokens);
+	if (no_spaces_before_or_after_tokens(minishell, minishell->tokens) == 0)
+	{
 	t_token *token_list;
 	token_list = *minishell->tokens;
 	while (token_list)
@@ -86,7 +133,6 @@ int	parse_tokens(t_minishell *minishell)
 		printf("type: %d\ntoken: %s\nheredoc: %d, append: %d, infile: %d, outfile: %d, command: %d\n\n", token_list->type, token_list->str, token_list->heredoc, token_list->append, token_list->infile, token_list->outfile, token_list->cmd);
 		token_list = token_list->next;
 	}
-	if (minishell->error)
-		return (1);
-	return (0);
+		init_execution(minishell);
+	}
 }

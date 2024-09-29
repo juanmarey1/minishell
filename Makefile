@@ -12,12 +12,12 @@ ENV = $(addprefix $(DIR_ENV), $(SRCS_ENV))
 
 
 DIR_MINISHELL_INIT = minishell_init/
-SRCS_MINISHELL_INIT = minishell.c init_input.c
+SRCS_MINISHELL_INIT = minishell.c init_input.c signals.c
 MINISHELL_INIT = $(addprefix $(DIR_MINISHELL_INIT), $(SRCS_MINISHELL_INIT))
 
 
 DIR_TOOLS = tools/
-SRCS_TOOLS = double_str.c token_list.c del_token.c ft_split_minishell.c
+SRCS_TOOLS = double_str.c token_list.c del_token.c ft_split_minishell.c join_tokens.c get_comb_of_argv.c ft_split_for_awk.c
 TOOLS = $(addprefix $(DIR_TOOLS), $(SRCS_TOOLS))
 
 

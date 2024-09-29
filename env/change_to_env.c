@@ -37,7 +37,10 @@ char	*get_env(char *line, int stay, int i, t_minishell *minishell)
 		j++;
 	}
 	str2[j] = '\0';
-	str2 = get_env_value(str2, minishell);
+	if (ft_strncmp(str2, "?", 2) == 0)
+		str2 = ft_itoa(minishell->exit_status);
+	else
+		str2 = get_env_value(str2, minishell);
 	return (str2);
 }
 

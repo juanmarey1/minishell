@@ -2,36 +2,51 @@
 
 void	pipe_write_dup(t_minishell *minishell, int i)
 {
-	if (i != 0)
-	{
-		if (minishell->infile == minishell->pipe_fd[i - 1][0])
-		{
-			dup2(minishell->infile, STDIN_FILENO);
-			close(minishell->pipe_fd[i - 1][1]);
-			close(minishell->pipe_fd[i - 1][0]);
-		}
-	}
-	else
-		dup2(minishell->infile, STDIN_FILENO);
 	if (minishell->pipes != 0 && i < minishell->pipes)
 	{
+		dup2(minishell->outfile, STDOUT_FILENO);
 		if (minishell->outfile == minishell->pipe_fd[i][1])
 		{
-			dup2(minishell->outfile, STDOUT_FILENO);
 			close(minishell->pipe_fd[i][0]);
 			close(minishell->pipe_fd[i][1]);
 		}
+		else
+			close(minishell->outfile);
 	}
-	else
+	else if (minishell->outfile != 1)
+	{
 		dup2(minishell->outfile, STDOUT_FILENO);
+		close(minishell->outfile);
+	}
+}
+
+void	pipe_read_dup(t_minishell *minishell, int i)
+{
+	if (i != 0)
+	{
+		dup2(minishell->infile, STDIN_FILENO);
+		if (minishell->infile == minishell->pipe_fd[i - 1][0])
+		{
+			close(minishell->pipe_fd[i - 1][1]);
+			close(minishell->pipe_fd[i - 1][0]);
+		}
+		else
+			close(minishell->infile);
+	}
+	else if (minishell->infile != 0)
+	{
+		dup2(minishell->infile, STDIN_FILENO);
+		close(minishell->infile);
+	}
 }
 
 void	pipe_create(t_minishell *minishell, int i)
 {
 	if (pipe(minishell->pipe_fd[i]) < 0)
 		return ;
-	printf("pipe-read: %d\n", minishell->pipe_fd[i][0]);
-	printf("pipe-write: %d\n", minishell->pipe_fd[i][1]);
+	printf("pipe->read: %d: %d\n", i, minishell->pipe_fd[i][0]);
+	printf("pipe->write: %d: %d\n", i, minishell->pipe_fd[i][1]);
+	minishell->outfile = minishell->pipe_fd[i][1];
 }
 
 void	create_pipes(t_minishell *minishell)

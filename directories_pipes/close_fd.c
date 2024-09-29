@@ -1,9 +1,8 @@
 #include "../include/minishell.h"
 
-void	close_file_descriptors(t_minishell *minishell)
+void	ft_close_free_pipefd(t_minishell *minishell)
 {
 	int	i;
-	int	status;
 
 	i = 0;
 	while (i < minishell->pipes)
@@ -14,15 +13,31 @@ void	close_file_descriptors(t_minishell *minishell)
 			close(minishell->pipe_fd[i][0]);
 		free(minishell->pipe_fd[i]);
 		i++;
-		
 	}
-	i = -1;
-	while (++i < minishell->pipes + 1)
-		waitpid(minishell->pid[i], &status, 0);
+}
+
+void	close_file_descriptors(t_minishell *minishell)
+{
+	if (minishell->pipe_fd)
+		ft_close_free_pipefd(minishell);
+	if (minishell->infile != 0)
+		close(minishell->infile);
+	if (minishell->before_infile != 0)
+		close(minishell->before_infile);
+	if (minishell->outfile != 1)
+		close(minishell->outfile);
+	if (minishell->before_outfile != 1)
+		close(minishell->before_outfile);
 	minishell->pipes = 0;
 	minishell->pid = 0;
 	minishell->infile = 0;
-	minishell->outfile = 0;
-	free(minishell->pipe_fd);
-	minishell->exit_status = status;
+	minishell->outfile = 1;
+	minishell->before_infile = 0;
+	minishell->before_outfile = 1;
+	if (minishell->pid)
+		free(minishell->pid);
+	if (minishell->pipe_fd)
+		free(minishell->pipe_fd);
+	minishell->pid = NULL;
+	minishell->pipe_fd = NULL;
 }

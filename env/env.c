@@ -19,6 +19,8 @@ void	unset_env(char *str, t_minishell *minishell)
 	{
 		if (ft_strncmp(minishell->env[i], str, ft_strlen(str)) == 0)
 			i++;
+		if (minishell->env[i] == NULL)
+			break ;
 		new_env[j] = ft_strdup(minishell->env[i]);
 		j++;
 	}
@@ -27,7 +29,7 @@ void	unset_env(char *str, t_minishell *minishell)
 	minishell->env = new_env;
 }
 
-void	add_env(char *str, t_minishell *minishell)
+char	**add_env(char *str, t_minishell *minishell)
 {
 	int		len;
 	char	**new_env;
@@ -37,7 +39,7 @@ void	add_env(char *str, t_minishell *minishell)
 	len = double_str_len(minishell->env);
 	new_env = (char **)malloc(sizeof(char *) * (len + 2));
 	if (!new_env)
-		return ;
+		return (NULL);
 	while (minishell->env[i])
 	{
 		new_env[i] = ft_strdup(minishell->env[i]);
@@ -46,7 +48,8 @@ void	add_env(char *str, t_minishell *minishell)
 	new_env[i] = ft_strdup(str);
 	new_env[i + 1] = NULL;
 	ft_free_double_array(minishell->env);
-	minishell->env = new_env;
+	minishell->env = NULL;
+	return (new_env);
 }
 
 void	set_env_value(char *str, char *value, t_minishell *minishell)
@@ -74,7 +77,7 @@ char	*get_env_value(char *str, t_minishell *minishell)
 	char	*value;
 
 	i = 0;
-	while (minishell->env[i] && ft_strncmp(minishell->env[i], str, ft_strlen(str)))
+	while (minishell->env[i] && ft_strncmp(get_env_name(minishell->env[i]), str, ft_strlen(str) + 1))
 		i++;
 	if (minishell->env[i] == NULL)
 		return (NULL);
@@ -95,6 +98,8 @@ void	sum_one_to_shlvl(t_minishell *minishell)
 	char	*shlvl_num_array;
 
 	shlvl = get_env_value("SHLVL", minishell);
+	if (shlvl == NULL)
+		return ;
 	shlvl_num = ft_atoi(shlvl) + 1;
 	shlvl_num_array = ft_itoa(shlvl_num);
 	set_env_value("SHLVL", shlvl_num_array, minishell);
