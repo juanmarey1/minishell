@@ -77,8 +77,14 @@ char	*get_env_value(char *str, t_minishell *minishell)
 	char	*value;
 
 	i = 0;
-	while (minishell->env[i] && ft_strncmp(get_env_name(minishell->env[i]), str, ft_strlen(str) + 1))
+	value = get_env_name(minishell->env[i]);
+	while (minishell->env[i] && ft_strncmp(value, str, ft_strlen(str) + 1))
+	{
+		free(value);
 		i++;
+		value = get_env_name(minishell->env[i]);
+	}
+	free(value);
 	if (minishell->env[i] == NULL)
 		return (NULL);
 	else

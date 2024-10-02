@@ -13,6 +13,14 @@ void	no_exit_free(char *str1, char *str2, t_minishell *minishell)
 	free_all(minishell, 0);
 }
 
+void	free_pids(pid_t *pid)
+{
+	if (pid != NULL)
+	{
+		free((void *)&pid[0]);
+	}
+}
+
 void	free_all(t_minishell *minishell, int is_exit)
 {
 	int	i;

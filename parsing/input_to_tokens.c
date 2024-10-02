@@ -83,8 +83,6 @@ void	input_to_tokens(t_minishell *minishell)
 	i = 0;
 	signal(SIGINT, SIG_IGN);
 	minishell->user_input = change_to_env_value(minishell->user_input, minishell);
-	if (!minishell->user_input)
-		return ;
 	while (minishell->user_input[i])
 	{
 		while ((minishell->user_input[i] == ' ' || minishell->user_input[i] == '\t'

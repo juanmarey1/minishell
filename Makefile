@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 RM = rm -rf
 
 
@@ -17,7 +17,7 @@ MINISHELL_INIT = $(addprefix $(DIR_MINISHELL_INIT), $(SRCS_MINISHELL_INIT))
 
 
 DIR_TOOLS = tools/
-SRCS_TOOLS = double_str.c token_list.c del_token.c ft_split_minishell.c join_tokens.c get_comb_of_argv.c ft_split_for_awk.c
+SRCS_TOOLS = double_str.c token_list.c del_token.c ft_split_minishell.c join_tokens.c get_comb_of_argv.c ft_split_for_awk.c ft_strtrim_with_free.c
 TOOLS = $(addprefix $(DIR_TOOLS), $(SRCS_TOOLS))
 
 

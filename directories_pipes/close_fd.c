@@ -28,14 +28,13 @@ void	close_file_descriptors(t_minishell *minishell)
 		close(minishell->outfile);
 	if (minishell->before_outfile != 1)
 		close(minishell->before_outfile);
+	free_pids(minishell->pid);
 	minishell->pipes = 0;
 	minishell->pid = 0;
 	minishell->infile = 0;
 	minishell->outfile = 1;
 	minishell->before_infile = 0;
 	minishell->before_outfile = 1;
-	if (minishell->pid)
-		free(minishell->pid);
 	if (minishell->pipe_fd)
 		free(minishell->pipe_fd);
 	minishell->pid = NULL;

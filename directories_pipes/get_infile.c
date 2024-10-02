@@ -6,7 +6,7 @@ char	*get_heredoc_line(char *eof)
 	char	*line_to_get;
 
 	signal(SIGINT, ctlc_heredoc);
-	line = ft_calloc(1, sizeof(char));
+	line = ft_strdup("");
 	while (1)
 	{
 		line_to_get = get_next_line(STDIN_FILENO);
@@ -36,6 +36,7 @@ int	get_heredoc_fd(t_token *list)
 		here_doc_line = get_heredoc_line(list->str);
 		write(fd[1], here_doc_line, ft_strlen(here_doc_line));
 		close(fd[1]);
+		free(here_doc_line);
 		return (fd[0]);
 	}
 }

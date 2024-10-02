@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-static void	change_env_value(char *name, char *value, t_minishell *minishell)
+void	change_env_value(char *name, char *value, t_minishell *minishell)
 {
 	char	*full_name;
 	int		i;
@@ -38,7 +38,9 @@ char	*get_env_name(char *str)
 
 	len = 0;
 	i = 0;
-	while (str[len] != '=')
+	if (!str)
+		return (NULL);
+	while (str[len] != '=' && str[len])
 		len++;
 	name = (char *)malloc(sizeof(char) * (len + 1));
 	if (!name)
@@ -66,18 +68,11 @@ static void	new_minishell_env(t_minishell *minishell, char **argv, int argc)
 		free(combination_of_argv);
 	}
 	else
+	{
+		free(old_str1);
 		new_str = ft_strdup(argv[1]);
-	if (get_env_value(get_env_name(new_str), minishell) != NULL)
-	{
-		change_env_value(get_env_name(new_str), get_value(new_str), minishell);
-		free(new_str);
 	}
-	else
-	{
-		minishell->env = add_env(new_str, minishell);
-		free(new_str);
-	}
-	free(old_str1);
+	add_new_export_env(new_str, minishell);
 }
 
 void	export_builtin(int argc, char **argv, t_minishell *minishell)

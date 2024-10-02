@@ -44,8 +44,8 @@ void	pipe_create(t_minishell *minishell, int i)
 {
 	if (pipe(minishell->pipe_fd[i]) < 0)
 		return ;
-	printf("pipe->read: %d: %d\n", i, minishell->pipe_fd[i][0]);
-	printf("pipe->write: %d: %d\n", i, minishell->pipe_fd[i][1]);
+	// printf("pipe->read: %d: %d\n", i, minishell->pipe_fd[i][0]);
+	// printf("pipe->write: %d: %d\n", i, minishell->pipe_fd[i][1]);
 	minishell->outfile = minishell->pipe_fd[i][1];
 }
 

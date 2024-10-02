@@ -2,18 +2,22 @@
 
 static void	unset_loop(int argc, char **argv, t_minishell *minishell)
 {
-	int	loop_n;
-	int	i;
+	int		loop_n;
+	char	*name;
+	int		i;
 
 	loop_n = 0;
 	while (++loop_n < argc)
 	{
 		i = 0;
-		printf("minishell->env: %s\n", minishell->env[i]);
-		printf("argv %s\n", argv[loop_n]);
-		while (ft_strncmp(get_env_name(minishell->env[i]), argv[loop_n], ft_strlen(argv[loop_n])) != 0 && minishell->env[i])
+		name = get_env_name(minishell->env[i]);
+		while (name && ft_strncmp(name, argv[loop_n], ft_strlen(argv[loop_n])) != 0 && minishell->env[i])
+		{
+			free(name);
 			i++;
-		printf("env: %s\n", minishell->env[i]);
+			name = get_env_name(minishell->env[i]);
+		}
+		free(name);
 		if (minishell->env[i] != NULL)
 			unset_env(argv[loop_n], minishell);
 	}

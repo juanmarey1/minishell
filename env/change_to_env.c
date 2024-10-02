@@ -24,6 +24,7 @@ char	*get_env(char *line, int stay, int i, t_minishell *minishell)
 {
 	char	*str2;
 	int		j;
+	char	*strcpy;
 
 	j = 0;
 	if (i - stay <= 1)
@@ -37,10 +38,13 @@ char	*get_env(char *line, int stay, int i, t_minishell *minishell)
 		j++;
 	}
 	str2[j] = '\0';
-	if (ft_strncmp(str2, "?", 2) == 0)
+	strcpy = ft_strdup(str2);
+	free(str2);
+	if (ft_strncmp(strcpy, "?", 2) == 0)
 		str2 = ft_itoa(minishell->exit_status);
 	else
-		str2 = get_env_value(str2, minishell);
+		str2 = ft_strdup(get_env_value(strcpy, minishell));
+	free(strcpy);
 	return (str2);
 }
 
@@ -99,6 +103,8 @@ void	ft_free_env_line_array(char **substring)
 	{
 		if (substring[0])
 			free(substring[0]);
+		if (substring[1])
+			free(substring[1]);
 		if (substring[2])
 			free(substring[2]);
 		free(substring);

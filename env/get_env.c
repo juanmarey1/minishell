@@ -50,3 +50,23 @@ void	get_list_of_env(char **environ, t_minishell *minishell)
 	minishell->size_of_env = double_str_len(environ);
 	minishell->env = new_list_of_env(environ, minishell);
 }
+
+void	add_new_export_env(char *new_str, t_minishell *minishell)
+{
+	char	*env_name;
+
+	env_name = get_env_name(new_str);
+	if (get_env_value(env_name, minishell) != NULL)
+	{
+		change_env_value(env_name, get_value(new_str), minishell);
+		env_name = NULL;
+		free(new_str);
+	}
+	else
+	{
+		minishell->env = add_env(new_str, minishell);
+		free(new_str);
+	}
+	if (env_name)
+		free(env_name);
+}

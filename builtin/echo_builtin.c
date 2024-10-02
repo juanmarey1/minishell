@@ -8,7 +8,7 @@ void	echo_builtin(int argc, char **argv, t_minishell *minishell)
 	i = 1;
 	new_line = 1;
 	if (argc == 1)
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		return (ft_putchar_fd('\n', STDOUT_FILENO), minishell->exit_status = 0, (void)0);
 	else if (argc == 2 && ft_strncmp(argv[1], "-n", ft_strlen("-n")) == 0)
 		return ;
 	if (ft_strncmp(argv[1], "-n", ft_strlen("-n")) == 0)

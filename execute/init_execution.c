@@ -83,15 +83,15 @@ void	init_execution(t_minishell *minishell)
 		if (i < minishell->pipes)
 			pipe_create(minishell, i);
 		minishell->outfile = get_outfile(minishell, minishell->outfile, i);
-		printf("infile: %d\noutfile: %d\ni: %d\n", minishell->infile, minishell->outfile, i);
+		// printf("infile: %d\noutfile: %d\ni: %d\n", minishell->infile, minishell->outfile, i);
 		if (minishell->before_infile != 0)
 		{
-			printf("close: %d\n", minishell->before_infile);
+			// printf("close: %d\n", minishell->before_infile);
 			close(minishell->before_infile);
 		}
 		if (minishell->before_outfile != 1)
 		{
-			printf("close: %d\n", minishell->before_outfile);
+			// printf("close: %d\n", minishell->before_outfile);
 			close(minishell->before_outfile);
 		}
 		init_fork(minishell, i);
@@ -99,6 +99,6 @@ void	init_execution(t_minishell *minishell)
 			break ;
 		i++;
 	}
-	printf("sexyyyy\n");
+	// printf("sexyyyy\n");
 	free_all(minishell, 0);
 }

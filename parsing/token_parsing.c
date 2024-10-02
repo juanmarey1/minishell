@@ -126,13 +126,13 @@ void	parse_tokens(t_minishell *minishell)
 	}
 	if (no_spaces_before_or_after_tokens(minishell, minishell->tokens) == 0)
 	{
-	t_token *token_list;
-	token_list = *minishell->tokens;
-	while (token_list)
-	{
-		printf("type: %d\ntoken: %s\nheredoc: %d, append: %d, infile: %d, outfile: %d, command: %d\n\n", token_list->type, token_list->str, token_list->heredoc, token_list->append, token_list->infile, token_list->outfile, token_list->cmd);
-		token_list = token_list->next;
-	}
+	// t_token *token_list;
+	// token_list = *minishell->tokens;
+	// while (token_list)
+	// {
+	// 	printf("type: %d\ntoken: %s\nheredoc: %d, append: %d, infile: %d, outfile: %d, command: %d\n\n", token_list->type, token_list->str, token_list->heredoc, token_list->append, token_list->infile, token_list->outfile, token_list->cmd);
+	// 	token_list = token_list->next;
+	// }
 		init_execution(minishell);
 	}
 }

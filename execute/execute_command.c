@@ -103,7 +103,7 @@ void	ft_execute_command(t_minishell *minishell, int i, int total_pipes)
 	{
 		cmd_argv = ft_split_minishell(cmd);
 		while (cmd_argv[++j])
-			cmd_argv[j] = ft_strtrim(cmd_argv[j], "\'\"");
+			cmd_argv[j] = ft_strtrim_with_free(cmd_argv[j], "\'\"");
 	}
 	else
 		cmd_argv = ft_split_for_awk(cmd);

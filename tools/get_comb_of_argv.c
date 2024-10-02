@@ -4,6 +4,7 @@ char	*get_comb_of_argv(int argc, char **argv)
 {
 	int		i;
 	char	*str;
+	char	*str_cpy;
 
 	i = 2;
 	str = ft_strdup("");
@@ -14,6 +15,9 @@ char	*get_comb_of_argv(int argc, char **argv)
 			str = ft_strjoin(str, " ");
 		i++;
 	}
-	str = ft_strtrim(str, "\"\'");
+	str_cpy = ft_strdup(str);
+	free(str);
+	str = ft_strtrim(str_cpy, "\"\'");
+	free(str_cpy);
 	return (str);
 }

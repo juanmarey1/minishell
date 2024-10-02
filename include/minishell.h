@@ -67,6 +67,8 @@ char	*get_line_after_env_change(char **substring, char *line, int i, int j);
 void	ft_free_env_line_array(char **substring);
 char	*get_env_name(char *str);
 char	*get_value(char *str);
+void	add_new_export_env(char *new_str, t_minishell *minishell);
+void	change_env_value(char *name, char *value, t_minishell *minishell);
 
 void	set_env_value(char *str, char *value, t_minishell *minishell);
 char	*get_env_value(char *str, t_minishell *minishell);
@@ -144,10 +146,12 @@ void	join_tokens(t_token *cmd1, t_token *cmd2, t_token **tokens);
 
 char	**ft_split_minishell(char *str);
 char	**ft_split_for_awk(char *line);
+char	*ft_strtrim_with_free(char *str, char *trim);
 char	*get_comb_of_argv(int argc, char **argv);
 
 // FREE FUNCTIONS //
 
+void	free_pids(pid_t *pid);
 void	ft_exit_error(char *str, t_minishell *minishell);
 void	ft_exit_no_error(char *str, t_minishell *minishell);
 void	free_all(t_minishell *minishell, int is_exit);
