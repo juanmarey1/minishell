@@ -22,7 +22,7 @@ make run    # Build executable and clean object files
 make clean  # Remove object files
 make fclean # Remove objects and executable
 make re     # Clean + build fresh executable
-´´´
+```
 ---
 ## 🚀 Usage
 Run the shell by executing the command and enjoy the bash replica!
